@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 
 import { NavbarComponent } from './global/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent],
@@ -17,7 +16,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    FontAwesomeModule,
     AppRoutingModule,
   ],
   providers: [],
