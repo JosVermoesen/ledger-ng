@@ -9,21 +9,21 @@
               <div class="btn-group" btnRadioGroup formControlName="dcOption">
                 <label
                   btnRadio="D"
-                  class="btn btn-primary btn-sm"
+                  class="btn btn-success btn-sm me-1"
                   tabindex="0"
                   role="button"
                   >Debit</label
                 >
                 <label
                   btnRadio="C"
-                  class="btn btn-primary btn-sm"
+                  class="btn btn-success btn-sm me-1"
                   tabindex="0"
                   role="button"
                   >Credit</label
                 >
                 <label
                   btnRadio="T"
-                  class="btn btn-primary btn-sm mr-1"
+                  class="btn btn-success btn-sm me-1"
                   tabindex="0"
                   role="button"
                   >Debit/Credit</label
@@ -37,7 +37,8 @@
                     >
                       Solde:
                       {{
-                        (ledgerEntrySolde$ | async)?.ctrlSolde | currency : "EUR"
+                        (ledgerEntrySolde$ | async)?.ctrlSolde
+                          | currency : "EUR"
                       }}
                     </button>
                   </div>
@@ -93,13 +94,13 @@
 
             <input
               type="submit"
-              class="btn btn-primary mr-1"
+              class="btn btn-primary me-1"
               value="{{ btnAddOrEdit }}"
               [disabled]="!ledgerEntryForm.valid"
             />
             <button
               type="button"
-              class="btn btn-warning mr-1"
+              class="btn btn-warning me-1"
               (click)="clearState()"
             >
               Ignore
