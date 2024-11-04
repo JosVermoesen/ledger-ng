@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { Observable } from 'rxjs';
 import { ILedgerEntry, ILedgerEntryItem, ILedgerEntrySolde } from './models/ledgerEntry';
