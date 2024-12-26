@@ -2,9 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { LedgerEntryService } from './modules/ledger-entry/services/ledgerEntry.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   ledgerEntryService = inject(LedgerEntryService);

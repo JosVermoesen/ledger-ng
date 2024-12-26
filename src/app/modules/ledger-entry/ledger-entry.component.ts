@@ -13,9 +13,10 @@ import { LedgerEntryService } from './services/ledgerEntry.service';
 import { Guid } from 'src/app/functions/guid';
 
 @Component({
-  selector: 'app-ledger-entry',
-  templateUrl: './ledger-entry.component.html',
-  styleUrls: ['./ledger-entry.component.scss'],
+    selector: 'app-ledger-entry',
+    templateUrl: './ledger-entry.component.html',
+    styleUrls: ['./ledger-entry.component.scss'],
+    standalone: false
 })
 export class LedgerEntryComponent implements OnInit {
   ledgerEntryService = inject(LedgerEntryService);
