@@ -10,17 +10,15 @@ import { LedgerEntryComponent } from './ledger-entry.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    LedgerEntryComponent
-  ],
+  declarations: [LedgerEntryComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     ButtonsModule.forRoot(),
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    LedgerEntryRoutingModule
+    LedgerEntryRoutingModule,
   ],
-  providers: []
+  providers: [],
 })
-export class LedgerEntryModule { }
+export class LedgerEntryModule {}

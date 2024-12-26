@@ -9,13 +9,16 @@ const routes: Routes = [
   },
   {
     path: 'ledger-entry',
-    loadChildren: () => import('./modules/ledger-entry/ledger-entry.module').then(m => m.LedgerEntryModule)
+    loadChildren: () =>
+      import('./modules/ledger-entry/ledger-entry.module').then(
+        (m) => m.LedgerEntryModule
+      ),
   },
   { path: '**', redirectTo: 'contact', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

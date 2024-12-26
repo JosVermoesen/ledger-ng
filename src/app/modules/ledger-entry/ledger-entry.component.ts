@@ -1,19 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import moment from 'moment';
 
 import { Observable } from 'rxjs';
-import { ILedgerEntry, ILedgerEntryItem, ILedgerEntrySolde } from './models/ledgerEntry';
+import {
+  ILedgerEntry,
+  ILedgerEntryItem,
+  ILedgerEntrySolde,
+} from './models/ledgerEntry';
 import { LedgerEntryService } from './services/ledgerEntry.service';
 import { Guid } from 'src/app/functions/guid';
 
 @Component({
   selector: 'app-ledger-entry',
   templateUrl: './ledger-entry.component.html',
-  styleUrls: ['./ledger-entry.component.scss']
+  styleUrls: ['./ledger-entry.component.scss'],
 })
 export class LedgerEntryComponent implements OnInit {
+  ledgerEntryService = inject(LedgerEntryService);
+  fb = inject(FormBuilder);
+
   ledgerEntryHeaderForm!: FormGroup;
   entryHeaderLocked!: boolean;
   descriptionAsHeader!: string;
@@ -26,16 +33,13 @@ export class LedgerEntryComponent implements OnInit {
   totalSolde!: number;
 
   loaded = false;
-  ledgerEntry$: Observable<ILedgerEntry> = null as any as Observable<ILedgerEntry>;
+  ledgerEntry$: Observable<ILedgerEntry> =
+    null as any as Observable<ILedgerEntry>;
   ledgerEntryJson: ILedgerEntry = null as any as ILedgerEntry;
   selectedLedgerEntryItem!: ILedgerEntryItem;
-  ledgerEntrySolde$: Observable<ILedgerEntrySolde> = null as any as Observable<ILedgerEntrySolde>;
-selectedBasketItem: any;
-
-  constructor(
-    private ledgerEntryService: LedgerEntryService,
-    private fb: FormBuilder
-  ) { }
+  ledgerEntrySolde$: Observable<ILedgerEntrySolde> =
+    null as any as Observable<ILedgerEntrySolde>;
+  selectedBasketItem: any;
 
   ngOnInit() {
     this.ledgerEntry$ = this.ledgerEntryService.ledgerEntry$;
@@ -58,7 +62,7 @@ selectedBasketItem: any;
 
     this.ledgerEntryHeaderForm = this.fb.group({
       description: [this.descriptionAsHeader, Validators.required],
-      lDate: [this.dateAsHeader, Validators.required]
+      lDate: [this.dateAsHeader, Validators.required],
     });
 
     this.btnAddOrEdit = 'Add';
@@ -80,7 +84,12 @@ selectedBasketItem: any;
       const entryDescription = this.ledgerEntryHeaderForm.value.description;
       const entryDate = this.ledgerEntryHeaderForm.value.lDate;
 
-      this.ledgerEntryService.addItemToLedgerEntry(ledgerEntryItem, entryDescription, entryDate, -1);
+      this.ledgerEntryService.addItemToLedgerEntry(
+        ledgerEntryItem,
+        entryDescription,
+        entryDate,
+        -1
+      );
     }
     this.refreshLedgerEntry();
     this.clearState();
@@ -95,14 +104,14 @@ selectedBasketItem: any;
       amount: [null, [Validators.required, Validators.min(0.01)]],
       account: [
         null,
-        [Validators.required, Validators.minLength(3), Validators.maxLength(7)]
+        [Validators.required, Validators.minLength(3), Validators.maxLength(7)],
       ],
-      tAccount: [null]
+      tAccount: [null],
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  checkBalance() { }
+  checkBalance() {}
 
   onBooking() {
     if (confirm('Are you sure?')) {
@@ -124,9 +133,9 @@ selectedBasketItem: any;
       amount: [item.amount, [Validators.required, Validators.min(0.01)]],
       account: [
         item.account,
-        [Validators.required, Validators.minLength(3), Validators.maxLength(7)]
+        [Validators.required, Validators.minLength(3), Validators.maxLength(7)],
       ],
-      tAccount: [item.tAccount]
+      tAccount: [item.tAccount],
     });
     this.btnAddOrEdit = 'Save';
   }
@@ -144,13 +153,13 @@ selectedBasketItem: any;
     switch (option.substring(0, 1)) {
       case 'D':
         return 'blue'; // debit
-  
+
       case 'C':
         return 'red'; // credit
-  
+
       case 'T':
         return 'green'; // with t bookingnumber
-  
+
       default:
         return ''; // default color
     }
@@ -159,8 +168,8 @@ selectedBasketItem: any;
   removeAllEntries() {
     if (confirm('Are you sure?')) {
       this.ledgerEntryService.removeAllItemsFromLedgerEntry();
-      
+
       this.refreshLedgerEntry();
     }
-   }
+  }
 }

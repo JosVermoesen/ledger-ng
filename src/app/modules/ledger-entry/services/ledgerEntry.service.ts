@@ -1,27 +1,31 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 // import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ILedgerEntry, ILedgerEntryItem, ILedgerEntrySolde, LedgerEntry } from '../models/ledgerEntry';
+import {
+  ILedgerEntry,
+  ILedgerEntryItem,
+  ILedgerEntrySolde,
+  LedgerEntry,
+} from '../models/ledgerEntry';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LedgerEntryService {
-  // baseUrl = environment.apiUrl;
+  http = inject(HttpClient);
+
   private ledgerEntrySource = new BehaviorSubject<ILedgerEntry>(null);
   ledgerEntry$ = this.ledgerEntrySource.asObservable();
 
   private ledgerEntrySoldeSource = new BehaviorSubject<ILedgerEntrySolde>(null);
   ledgerEntrySolde$ = this.ledgerEntrySoldeSource.asObservable();
 
-  constructor(private http: HttpClient) { }
-
   private createLedgerEntry(): ILedgerEntry {
     const newLedgerEntry = new LedgerEntry();
     localStorage.setItem('ledgerEntry_id', newLedgerEntry.id);
-    localStorage.setItem(newLedgerEntry.id, JSON.stringify(newLedgerEntry))
+    localStorage.setItem(newLedgerEntry.id, JSON.stringify(newLedgerEntry));
     return newLedgerEntry;
   }
 
@@ -33,7 +37,9 @@ export class LedgerEntryService {
       })
       .pipe(
         map(() => {
-          const busyWithLedgerEntry: ILedgerEntry = JSON.parse(localStorage.getItem(id));
+          const busyWithLedgerEntry: ILedgerEntry = JSON.parse(
+            localStorage.getItem(id)
+          );
           this.ledgerEntrySource.next(busyWithLedgerEntry);
           // console.log(this.getCurrentBasketValue());
           this.calculateCubeAmount();
@@ -82,15 +88,18 @@ export class LedgerEntryService {
     item: ILedgerEntryItem,
     description: string,
     entryDate: string,
-    cubeControl: number) {
-    const itemToAdd: ILedgerEntryItem = this.mapEntryItemToLedgerEntryItem(item);
+    cubeControl: number
+  ) {
+    const itemToAdd: ILedgerEntryItem =
+      this.mapEntryItemToLedgerEntryItem(item);
 
     /* let basket = this.getCurrentBasketValue();
     if (basket === null) {
       this.createBasket();
     } */
     // above on older typescript does the same as line below!
-    const ledgerEntry = this.getCurrentLedgerEntryValue() ?? this.createLedgerEntry();
+    const ledgerEntry =
+      this.getCurrentLedgerEntryValue() ?? this.createLedgerEntry();
 
     ledgerEntry.items = this.addOrUpdateItem(ledgerEntry.items, itemToAdd);
     ledgerEntry.description = description;
@@ -122,11 +131,14 @@ export class LedgerEntryService {
       counter++;
     }
     const ctrlSolde = cubeAmount;
-    this.ledgerEntrySoldeSource.next({ ctrlSolde })
+    this.ledgerEntrySoldeSource.next({ ctrlSolde });
   }
 
-  private addOrUpdateItem(items: ILedgerEntryItem[], itemToAdd: ILedgerEntryItem): ILedgerEntryItem[] {
-    const index = items.findIndex(i => i.id === itemToAdd.id);
+  private addOrUpdateItem(
+    items: ILedgerEntryItem[],
+    itemToAdd: ILedgerEntryItem
+  ): ILedgerEntryItem[] {
+    const index = items.findIndex((i) => i.id === itemToAdd.id);
     if (index === -1) {
       items.push(itemToAdd);
     } else {
@@ -138,20 +150,22 @@ export class LedgerEntryService {
     return items;
   }
 
-  private mapEntryItemToLedgerEntryItem(item: ILedgerEntryItem): ILedgerEntryItem {
+  private mapEntryItemToLedgerEntryItem(
+    item: ILedgerEntryItem
+  ): ILedgerEntryItem {
     return {
       id: item.id,
       dcOption: item.dcOption,
       amount: item.amount,
       account: item.account,
-      tAccount: item.tAccount
-    }
+      tAccount: item.tAccount,
+    };
   }
 
   removeItemFromLedgerEntry(item: ILedgerEntryItem) {
     const ledgerEntry = this.getCurrentLedgerEntryValue();
-    if (ledgerEntry.items.some(x => x.id === item.id)) {
-      ledgerEntry.items = ledgerEntry.items.filter(i => i.id !== item.id);
+    if (ledgerEntry.items.some((x) => x.id === item.id)) {
+      ledgerEntry.items = ledgerEntry.items.filter((i) => i.id !== item.id);
       if (ledgerEntry.items.length > 0) {
         this.setLedgerEntry(ledgerEntry);
       } else {

@@ -1,4 +1,4 @@
-import { Guid } from "src/app/functions/guid";
+import { Guid } from 'src/app/functions/guid';
 
 export interface ILedgerEntry {
   id: string;
