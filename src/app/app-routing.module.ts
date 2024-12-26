@@ -14,7 +14,7 @@ const routes: Routes = [
         (m) => m.LedgerEntryModule
       ),
   },
-  { path: '**', redirectTo: 'contact', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({
